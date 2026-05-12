@@ -1,10 +1,9 @@
-﻿using Ahorcado.Ahorcado;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Ahorcado
 {
-    internal class PalabrasEnMemoria : IRepositorioPalabras
+    internal class PalabrasEnMemoria : IRepositorioPalabra
     {
         private readonly List<string> _palabras = new()
         {
@@ -17,7 +16,7 @@ namespace Ahorcado
 
         public string ObtenerPalabraAleatoria()
         {
-            var random = new Random();
+            Random random = new Random();
             return _palabras[random.Next(_palabras.Count)];
         }
     }

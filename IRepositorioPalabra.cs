@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Ahorcado
 {
-    internal class IRepositorioPalabra
+    public interface IRepositorioPalabra
     {
-        namespace Ahorcado
-    {
-        public interface IRepositorioPalabra {
-            string ObtenerPalabraAleatoria();
-        }
+        string ObtenerPalabraAleatoria();
     }
 }
