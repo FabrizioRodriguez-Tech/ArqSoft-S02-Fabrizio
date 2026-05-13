@@ -17,38 +17,43 @@ namespace Ahorcado
             Console.Clear();
             MostrarAhorcado();
 
+            if (_motor.MostrarPista)
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine($"PISTA: La palabra empieza con '{_motor.PalabraSecreta[0]}'");
+                Console.ResetColor();
+            }
+
             Console.WriteLine($"Intentos restantes: {_motor.IntentosRestantes}");
             Console.WriteLine($"Letras usadas: {string.Join(", ", _motor.LetrasUsadas)}");
 
             Console.Write("Palabra: ");
-
             foreach (char c in _motor.PalabraSecreta)
             {
                 Console.Write(_motor.LetrasUsadas.Contains(c) ? $"{c} " : "_ ");
             }
-
             Console.WriteLine();
         }
 
         public char PedirLetra()
         {
             Console.Write("\nIngresa una letra: ");
-            return Console.ReadLine()?.ToLower()[0] ?? ' ';
+            string entrada = Console.ReadLine()?.Trim().ToLower() ?? string.Empty;
+            return entrada.Length > 0 ? entrada[0] : '\0';
         }
 
-        public void MostrarMensaje(string mensaje)
-            => Console.WriteLine(mensaje);
+        public void MostrarMensaje(string mensaje) => Console.WriteLine(mensaje);
 
         public bool PreguntarOtraVez()
         {
             Console.Write("\n¿Jugar otra vez? (s/n): ");
-            return Console.ReadLine()?.ToLower() == "s";
+            string respuesta = Console.ReadLine()?.Trim().ToLower() ?? "n";
+            return respuesta == "s";
         }
 
         private void MostrarAhorcado()
         {
-            string[] etapas =
-            {
+            string[] etapas = {
                 " -----\n |   |\n |   \n |   \n |   \n |   \n=========",
                 " -----\n |   |\n |   O\n |   \n |   \n |   \n=========",
                 " -----\n |   |\n |   O\n |   |\n |   \n |   \n=========",
@@ -57,8 +62,9 @@ namespace Ahorcado
                 " -----\n |   |\n |   O\n |  /|\\\n |  /  \n |   \n=========",
                 " -----\n |   |\n |   O\n |  /|\\\n |  / \\\n |   \n========="
             };
-
-            Console.WriteLine(etapas[6 - _motor.IntentosRestantes]);
+            int intentos = _motor.IntentosRestantes;
+            int indice = Math.Clamp(6 - intentos, 0, 6);
+            Console.WriteLine(etapas[indice]);
         }
     }
 }

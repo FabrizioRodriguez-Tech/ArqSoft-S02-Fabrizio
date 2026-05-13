@@ -39,7 +39,6 @@ namespace Ahorcado
                 Console.Write("\nIngresa una letra: ");
                 string entrada = Console.ReadLine()?.ToLower();
 
-                // Validación de entrada vacía
                 if (string.IsNullOrEmpty(entrada)) continue;
 
                 char letra = entrada[0];
@@ -59,7 +58,6 @@ namespace Ahorcado
                 }
             }
 
-            // Si sale del bucle es porque perdió
             MostrarTablero();
             Console.WriteLine($"\nPerdiste. La palabra era: {_palabraSecreta}");
             Reiniciar();
@@ -67,7 +65,6 @@ namespace Ahorcado
 
         private bool VerificarVictoria()
         {
-            // Más limpio usando LINQ
             return _palabraSecreta.All(c => _letrasUsadas.Contains(c));
         }
 
@@ -85,6 +82,17 @@ namespace Ahorcado
             Console.Clear();
             Console.WriteLine("=== AHORCADO ===");
             MostrarAhorcado();
+
+            // --- LÓGICA DE PISTA (RETO) ---
+            // Si el jugador ha fallado 3 veces o más (quedan 3 o menos intentos)
+            if (_intentosRestantes <= 3)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"PISTA: La palabra empieza con '{_palabraSecreta[0]}'");
+                Console.ResetColor();
+            }
+            // ------------------------------
+
             Console.WriteLine($"Intentos restantes: {_intentosRestantes}");
             Console.WriteLine($"Letras usadas: {string.Join(", ", _letrasUsadas)}");
             Console.Write("Palabra: ");
@@ -100,13 +108,13 @@ namespace Ahorcado
         {
             string[] etapas = new string[]
             {
-                " -----\n |   |\n |   \n |   \n |   \n |   \n=========", // 6 intentos
-                " -----\n |   |\n |   O\n |   \n |   \n |   \n=========", // 5
-                " -----\n |   |\n |   O\n |   |\n |   \n |   \n=========", // 4
-                " -----\n |   |\n |   O\n |  /|\n |   \n |   \n=========", // 3
-                " -----\n |   |\n |   O\n |  /|\\\n |   \n |   \n=========", // 2
-                " -----\n |   |\n |   O\n |  /|\\\n |  /  \n |   \n=========", // 1
-                " -----\n |   |\n |   O\n |  /|\\\n |  / \\\n |   \n========="  // 0
+                " -----\n |   |\n |   \n |   \n |   \n |   \n=========",
+                " -----\n |   |\n |   O\n |   \n |   \n |   \n=========",
+                " -----\n |   |\n |   O\n |   |\n |   \n |   \n=========",
+                " -----\n |   |\n |   O\n |  /|\n |   \n |   \n=========",
+                " -----\n |   |\n |   O\n |  /|\\\n |   \n |   \n=========",
+                " -----\n |   |\n |   O\n |  /|\\\n |  /  \n |   \n=========",
+                " -----\n |   |\n |   O\n |  /|\\\n |  / \\\n |   \n========="
             };
 
             int indice = 6 - _intentosRestantes;

@@ -1,23 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Ahorcado
 {
-    internal class PalabrasEnMemoria : IRepositorioPalabra
+    public class PalabrasEnMemoria : IRepositorioPalabra
     {
-        private readonly List<string> _palabras = new()
-        {
-            "arquitectura",
-            "interfaz",
-            "polimorfismo",
-            "encapsulamiento",
-            "herencia"
-        };
-
         public string ObtenerPalabraAleatoria()
         {
+            string[] palabras = { "arquitectura", "interfaz", "polimorfismo", "encapsulamiento", "herencia" };
             Random random = new Random();
-            return _palabras[random.Next(_palabras.Count)];
+            return palabras[random.Next(palabras.Length)];
         }
     }
 }
