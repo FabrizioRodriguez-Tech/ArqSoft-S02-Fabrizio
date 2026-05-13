@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ahorcado
+﻿namespace Ahorcado
 {
     public interface IRepositorioPalabra
     {
