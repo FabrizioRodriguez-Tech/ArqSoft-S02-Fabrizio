@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace Ahorcado
 {
@@ -6,17 +7,76 @@ namespace Ahorcado
     {
         static void Main(string[] args)
         {
-            // 1. Usamos la clase concreta para acceder a la propiedad CategoriaSeleccionada
+            bool continuarEnApp = true;
+
+            while (continuarEnApp)
+            {
+                Console.Clear();
+                Console.WriteLine("=== MENU PRINCIPAL GNOSIS ===");
+                Console.WriteLine("¿Qué juego quieres jugar?");
+                Console.WriteLine("  1 — Ahorcado");
+                Console.WriteLine("  2 — Viborita");
+                Console.WriteLine("  3 — Salir");
+                Console.Write("\nOpción: ");
+                var opcion = Console.ReadLine();
+
+                if (opcion == "2")
+                {
+                    EjecutarViborita();
+                }
+                else if (opcion == "1")
+                {
+                    EjecutarAhorcado();
+                }
+                else if (opcion == "3")
+                {
+                    continuarEnApp = false;
+                }
+            }
+        }
+
+        static void EjecutarViborita()
+        {
+            var motor = new MotorViborita();
+            var ui = new ConsolaUIViborita(motor);
+
+            Console.CursorVisible = false;
+
+            while (!motor.Ganado() && !motor.Perdido())
+            {
+                ui.MostrarTablero();
+                var tecla = ui.LeerTecla();
+
+                if (tecla == ConsoleKey.Q) break;
+
+                if (tecla != ConsoleKey.NoName)
+                    motor.CambiarDireccion(tecla);
+
+                motor.Avanzar();
+                Thread.Sleep(150); // Velocidad del juego
+            }
+
+            ui.MostrarTablero();
+            ui.MostrarMensaje(motor.Ganado()
+                ? "\n¡Ganaste! Llegaste a 10 puntos."
+                : "\nGame over.");
+
+            Console.WriteLine("\nPresiona cualquier tecla para volver al menú...");
+            Console.ReadKey();
+            Console.CursorVisible = true;
+        }
+
+        static void EjecutarAhorcado()
+        {
             PalabrasEnMemoria fuente = new PalabrasEnMemoria();
             bool jugarOtraVez = true;
 
             while (jugarOtraVez)
             {
-                // 2. Creamos una UI temporal para pedir la categoría antes que el motor exista
+                // UI temporal para pedir categoría (motor es null al inicio)
                 ConsolaUI uiInicial = new ConsolaUI(null);
                 fuente.CategoriaSeleccionada = uiInicial.PedirCategoria();
 
-                // 3. Ahora el motor se crea con la fuente ya configurada
                 MotorAhorcado motor = new MotorAhorcado(fuente);
                 ConsolaUI ui = new ConsolaUI(motor);
 
